@@ -1,0 +1,72 @@
+{% extends "index.html" %}
+
+{% block body %}
+<div class="ms-3">
+    <div class="d-flex align-items-center justify-content-between mx-4 mb-4 py-2 border-bottom border-dark border-3">
+        <h6 class="py-1 mb-0">Welcome {{user.first_name}}</h6>
+        <img id="add_ride" class="ms-auto" src="{{url_for('static',filename='images/banana.png')}}" alt="request a ride">
+        <a class="ms-2 fst-italic " href="/rides_new/">Request a Ride</a>
+        <a class="ms-5" href="/logout/">log out</a>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col ms-4">
+            <h4 class="text-center fst-italic orange">Rideshare Requests</h4>
+            <div class="row mb-3 ms-3 fs-6">
+                {% for ride in rides %}
+                    {% if ride.driver == None %}
+                        {% if ride.rider.id == user.id %}
+                        <div class="row mb-2 p-1 border border-dark border-3 bg-yellow">
+                        {% else %}
+                        <div class="row mb-2 p-1 border border-dark border-3">
+                        {% endif %}
+                            <p class="col-4 mb-1">Rider:</p>
+                            <p class="col-8 mb-1">{{ride.rider.first_name}}</p>
+                            <p class="col-4 mb-1">Destination:</p>
+                            <p class="col-8 mb-1">{{ride.destination}}</p>
+                            <p class="col-4 mb-1">When needed:</p>
+                            <p class="col-8 mb-1">{{ride.date.strftime("%B %-d")}}</p>
+                            {% if ride.rider.id == user.id %}
+                                <a class="ms-auto me-2 w-min" href="/rides_delete/{{ride.id}}/">DELETE</a>
+                            {% else %}
+                                <a class="ms-auto me-2 w-min" href="/update_driver/{{ride.id}}/{{user.id}}/">I can drive!</a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col mx-4">
+            <h4 class="text-center fst-italic orange">Booked Rideshares</h4>
+            <div class="row mb-3">
+                {% for ride in rides %}
+                    {% if ride.driver != None %}
+                        {% if ride.rider.id == user.id %}
+                            <div class="row mb-3 p-1 border border-dark border-3 bg-yellow">
+                                <p class="mb-1"><b>{{ride.driver.first_name}}</b> is driving <b>You</b></p>
+                                <p class="mb-1">to {{ride.destination}} on {{ride.date.strftime("%B %-d")}}</p>
+                                <a href="/rides_one/{{ride.id}}/">Details</a>
+                            </div>
+                        {% elif ride.driver.id == user.id %}
+                            <div class="row mb-3 p-1 border border-dark border-3 bg-yellow">
+                                <p class="mb-1"><b>You</b> are driving <b>{{ride.rider.first_name}}</b></p>
+                                <p class="mb-1">to {{ride.destination}} on {{ride.date.strftime("%B %-d")}}</p>
+                                <div class="d-flex align-items-center justify-content-start">
+                                    <a href="/rides_one/{{ride.id}}/">Details</a>
+                                    <span class="mx-2">|</span>
+                                    <a href="/update_driver/{{ride.id}}/None">Cancel</a>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="row mb-3 p-1 border border-dark border-3">
+                                <p class="mb-1"><b>{{ride.driver.first_name}}</b> is driving <b>{{ride.rider.first_name}}</b></p>
+                                <p class="mb-1">to {{ride.destination}} on {{ride.date.strftime("%B %-d")}}</p>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %} 
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

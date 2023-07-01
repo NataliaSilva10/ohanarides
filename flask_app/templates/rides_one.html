@@ -1,0 +1,46 @@
+{% extends "index.html" %}
+
+{% block body %}
+<div class="d-flex align-items_center mx-4 py-3">
+    <a href="/dashboard/" class="ms-auto me-5">home</a>
+    <a href="/logout/" class="ms-5 me-5">logout</a>
+</div>
+<div class="row mx-5 p-3 border border-dark border-3">
+    <h1 class="mb-3">Ready for your trip to {{ride.destination}}?</h1>
+    <p class="col-4">Who's driving?</p>
+    {% if ride.driver_id == user.id %}
+        <p class="col-8">You</p>
+    {% else %}
+        <p class="col-8">{{ride.driver.first_name}}</p>
+    {% endif %}
+    <p class="col-4">Who's coming along?</p>
+    {% if ride.rider.id == user.id %}
+        <p class="col-8">You</p>
+    {% else %}
+        <p class="col-8">{{ride.rider.first_name}}</p>
+    {% endif %}
+    <p class="col-4">Date:</p>
+    <p class="col-8">{{ride.date.strftime("%B %-d")}}</p>
+    <p class="col-4">Pick-up Location:</p>
+    <p class="col-8">{{ride.pick_up_location}}</p>
+    <p class="col-4">Details:</p>
+    <p class="col-8">{{ride.details}}</p>
+    <div class="d-flex align-items-center justify-content-start">
+        <a class=""href="/rides_edit/{{ride.id}}/">Edit</a>
+        <span class="mx-2">|</span>
+        <a class=""href="/rides_delete/{{ride.id}}/">Delete</a>
+    </div>
+</div>
+<div class="row mx-5 mt-4 px-3 pt-3 border-top border-dark border-3 purple">
+    <h3 class="">Ride Messages</h3>
+    {% for message in messages %}
+        <p class="col-3 py-0">{{message.sender.first_name}}:</p>
+        <p class="col-9 py-0">{{message.content}}</p>
+    {% endfor %}
+</div>
+<form class="row mx-5 px-3"action="/post_message/{{ride.id}}/" method="post">
+    <textarea class="w-100 p-2 border border-dark border-3" name="content" id="content" ></textarea>
+    <input class="col-2 ms-auto mt-4 text-white bg_purple" type="submit" value="Send Message">
+</form>
+
+{% endblock body %}

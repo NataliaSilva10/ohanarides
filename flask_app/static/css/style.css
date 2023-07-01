@@ -1,0 +1,33 @@
+* {
+    margin:0;
+    border:0;
+    padding:0;
+    box-sizing: border-box;
+    vertical-align: top;
+    font-size:x-large;
+    /* outline:1px red dashed; */
+}
+input, textarea {
+    border:black 3px solid;
+}
+input[type="submit"] {
+    box-shadow: 5px 5px 5px black;
+}
+#add_ride {
+    height:30px;
+}
+.orange {
+    color:orange;
+}
+.w-min {
+    width:max-content;
+}
+.bg-yellow {
+    background-color: #FFE599;
+}
+.purple {
+    color:purple;
+}
+.bg_purple {
+    background-color: purple;
+}

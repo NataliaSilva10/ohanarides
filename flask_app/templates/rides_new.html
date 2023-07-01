@@ -1,0 +1,31 @@
+{% extends "index.html" %}
+
+{% block body %}
+<div class="d-flex justify-content-between align-items-center mx-4 mb-4 py-2">
+    <h3 class="xxx">Request a Ride</h3>
+    <a href="/dashboard/" class="ms-auto me-5">home</a>
+    <a href="/logout/" class="ms-5">logout</a>
+</div>
+<form class="container" action="/rides_add/" method="post">
+    {% with errors=get_flashed_messages(category_filter=["request"]) %}
+        {% if errors %}
+            {% for error in errors %}
+                <p class="text-danger">{{error}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="row mb-3 mx-5 px-5">
+        <label for="destination" class="col-3 mb-3">Destination</label>
+        <input type="text" name="destination" id="destination" class="col-9 mb-3 py-2" value="{{session['destination']}}">
+        <label for="pick_up_location" class="col-3 mb-3">Pick-up Location</label>
+        <input type="text" name="pick_up_location" id="pick_up_location" class="col-9 mb-3 py-2"  value="{{session['pick_up_location']}}">
+        <label for="date" class="col-3 mb-3">Rideshare Date</label>
+        <input type="date" name="date" id="date" class="col-9 mb-3 py-2"  value="{{session['date']}}">
+        <label for="details" class="col-3 mb-3">Details</label>
+        <textarea name="details" id="details" rows="5" class="col-9 mb-3 py-2">{{session['details']}}</textarea>
+        <input type="submit" value="Post" class="col-2 ms-auto">
+    </div>
+</form>
+
+
+{% endblock body %}
